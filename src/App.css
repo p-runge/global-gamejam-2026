@@ -1,0 +1,14 @@
+.start {
+  height: 100vh;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  p {
+    letter-spacing: 0.3em;
+    font-size: 2rem;
+    opacity: 0.8;
+    padding-top: 2em;
+  }
+}
