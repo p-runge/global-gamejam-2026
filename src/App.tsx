@@ -4,8 +4,7 @@ import Menu from "./Scene/Menu"
 import Controls from "./components/controls"
 import SceneManager from "./components/scene-manager"
 import { SceneManagerProvider } from "./components/scene-manager/use-scene-manager"
-import StartScreen from "./StartScreen"
-// import StartScreen from "./StartScreen"
+// todo : phillip implements this : import StartScreen from "./StartScreen"
 
 export default function App() {
   return (
@@ -16,13 +15,11 @@ export default function App() {
           dpr={[1, 2]}
           camera={{
             position: [6, 6, 6],
-            // position: [0, 0, 15],
             fov: 45,
             near: 0.1,
             far: 50,
           }}
         >
-          {/* <StartScreen /> */}
           <ambientLight intensity={0.35} />
 
           <directionalLight

@@ -21,25 +21,15 @@ export default function StartScreen() {
   })
 
   return (
-    <>
-      <ambientLight intensity={0.2} />
-      <spotLight
-        ref={lightRef}
-        position={[0, 2, 3]}
-        angle={0.5}
-        penumbra={1}
-        intensity={2}
-        target-position={[0, 0, 0]}
-        castShadow
-      />
-      <pointLight position={[-2, 1, 2]} intensity={1} color='#4488ff' />
-      <pointLight position={[2, 1, 2]} intensity={1} color='#ff4488' />
-
-      <Html position={[0, 0, 0]} fullscreen>
-        <div className='text-2xl underline flex justify-center'>
-          Press Space
-        </div>
-      </Html>
-    </>
+    <Html position={[0, 0, 0]} fullscreen>
+      <h1 className='text-center text-9xl py-30 tracking-[.3em] font-black text-white drop-shadow-lg'>
+        Title of Game
+      </h1>
+      <div className='flex flex-col gap-7 justify-center items-center'>
+        <p className='text-3xl tracking-[.3em] uppercase'>Menu Option 1</p>
+        <p className='text-3xl tracking-[.3em] uppercase'>Menu Option 2</p>
+        <p className='text-3xl tracking-[.3em] uppercase'>Menu Option 3</p>
+      </div>
+    </Html>
   )
 }
