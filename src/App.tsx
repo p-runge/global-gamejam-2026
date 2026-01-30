@@ -1,24 +1,28 @@
-import { Canvas } from "@react-three/fiber";
-import { createRoot } from "react-dom/client";
-import Menu from "./Scene/Menu";
-import Controls from "./components/controls";
-import SceneManager from "./components/scene-manager";
-import { SceneManagerProvider } from "./components/scene-manager/use-scene-manager";
+import { Canvas } from "@react-three/fiber"
+import { createRoot } from "react-dom/client"
+import Menu from "./Scene/Menu"
+import Controls from "./components/controls"
+import SceneManager from "./components/scene-manager"
+import { SceneManagerProvider } from "./components/scene-manager/use-scene-manager"
+import StartScreen from "./StartScreen"
+// import StartScreen from "./StartScreen"
 
 export default function App() {
   return (
     <Menu>
-      <div id="canvas-container">
+      <div id='canvas-container'>
         <Canvas
           shadows
           dpr={[1, 2]}
           camera={{
             position: [6, 6, 6],
+            // position: [0, 0, 15],
             fov: 45,
             near: 0.1,
             far: 50,
           }}
         >
+          {/* <StartScreen /> */}
           <ambientLight intensity={0.35} />
 
           <directionalLight
@@ -41,7 +45,7 @@ export default function App() {
         </Canvas>
       </div>
     </Menu>
-  );
+  )
 }
 
-createRoot(document.getElementById("root")!).render(<App />);
+createRoot(document.getElementById("root")!).render(<App />)
