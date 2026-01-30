@@ -7,16 +7,7 @@ import { GameProvider } from "./hooks/use-game";
 export default function App() {
   return (
     <div id="canvas-container">
-      <Canvas
-        shadows
-        dpr={[1, 2]}
-        camera={{
-          position: [0, 0, 6],
-          fov: 45,
-          near: 0.1,
-          far: 50,
-        }}
-      >
+      <Canvas>
         <ambientLight intensity={0.35} />
         <directionalLight
           position={[8, 10, 6]}
