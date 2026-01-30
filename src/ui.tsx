@@ -1,8 +1,8 @@
-import { Html } from "@react-three/drei";
+import UIElement from "./components/ui-element";
 
 export default function UI() {
   return (
-    <Html position={[0, 0, 0]} transform={false} fullscreen>
+    <UIElement>
       <div
         style={{
           position: "absolute",
@@ -15,6 +15,6 @@ export default function UI() {
         <p>Level: 69</p>
         <p>Score: over 9000</p>
       </div>
-    </Html>
+    </UIElement>
   );
 }
