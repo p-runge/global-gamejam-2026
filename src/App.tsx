@@ -2,6 +2,7 @@ import { createRoot } from "react-dom/client";
 import { Canvas } from "@react-three/fiber";
 import Menu from "./Scene/Menu"
 import Player from "./player";
+import UI from "./ui";
 
 export default function App() {
   return (
@@ -18,6 +19,7 @@ export default function App() {
         }}
       >
         <ambientLight intensity={0.35} />
+        <UI></UI>
 
         <directionalLight
           position={[8, 10, 6]}
