@@ -10,9 +10,10 @@ export default function UI() {
           left: 0,
           pointerEvents: "none",
         }}
-        className="border rounded-lg bg-white text-blue-500"
+        className="border rounded-lg bg-white text-blue-500 flex flex-col p-2 m-4"
       >
-        Level: over 9000
+        <p>Level: 69</p>
+        <p>Score: over 9000</p>
       </div>
     </Html>
   );
