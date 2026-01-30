@@ -8,7 +8,7 @@ interface PlayerPosition {
 
 interface GameContextType {
   playerPosition: PlayerPosition;
-  setPlayerPosition: (position: PlayerPosition) => void;
+  movePlayer: (position: PlayerPosition) => void;
 }
 
 const GameContext = createContext<GameContextType | undefined>(undefined);
@@ -21,7 +21,9 @@ export const GameProvider = ({ children }: { children: React.ReactNode }) => {
   });
 
   return (
-    <GameContext.Provider value={{ playerPosition, setPlayerPosition }}>
+    <GameContext.Provider
+      value={{ playerPosition, movePlayer: setPlayerPosition }}
+    >
       {children}
     </GameContext.Provider>
   );

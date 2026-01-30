@@ -2,11 +2,21 @@ import { useFrame } from "@react-three/fiber";
 import { useRef } from "react";
 import * as THREE from "three";
 import UIElement from "../components/ui-element";
+import { useControls } from "../hooks/use-controls";
+import { useSceneManager } from "../components/scene-manager/use-scene-manager";
 
 export default function Start() {
+  const { switchScene } = useSceneManager();
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const textRef = useRef<any>(null);
   const lightRef = useRef<THREE.SpotLight>(null);
+
+  useControls({
+    keyboard: {
+      " ": () => switchScene("game"),
+      Enter: () => switchScene("game"),
+    },
+  });
 
   useFrame(({ clock }) => {
     if (textRef.current) {
