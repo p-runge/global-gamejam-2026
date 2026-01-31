@@ -2,6 +2,7 @@ import { useTexture } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import { useRef } from "react";
 import * as THREE from "three";
+import enemyImage from "../assets/enemy.png";
 import { useGame } from "../hooks/use-game";
 import { isColliding } from "../utils/collision";
 import { type MovementBehavior } from "../utils/movement";
@@ -23,7 +24,7 @@ export default function Enemy({
   const enemyMeshRef = useRef<THREE.Mesh>(null!);
   const playerMeshRef = useRef<THREE.Mesh | null>(null);
   const hasCollidedRef = useRef<boolean>(false);
-  const enemyTexture = useTexture("/src/assets/enemy.png", (texture) => {
+  const enemyTexture = useTexture(enemyImage, (texture) => {
     texture.magFilter = THREE.NearestFilter;
     texture.minFilter = THREE.NearestFilter;
   });

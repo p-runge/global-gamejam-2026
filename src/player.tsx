@@ -2,18 +2,19 @@ import { OrthographicCamera, useTexture } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
-import { useControls } from "./hooks/use-controls";
-import { useGame } from "./hooks/use-game";
+import playerSpriteSheet from "./assets/player-sprite-sheet.png";
 import {
   useAnimation,
-  type SpriteSheetData,
   type Animation,
+  type SpriteSheetData,
 } from "./hooks/use-animation";
+import { useControls } from "./hooks/use-controls";
+import { useGame } from "./hooks/use-game";
 import UI from "./ui";
 import { isColliding } from "./utils/collision";
 
 const spriteSheet: SpriteSheetData = {
-  url: "/src/assets/player-sprites.png",
+  url: playerSpriteSheet,
   tileWidth: 32,
   tileHeight: 32,
   rows: 1,
