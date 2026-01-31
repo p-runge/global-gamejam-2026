@@ -1,8 +1,16 @@
 import { useLevelManager } from "./components/level-manager/use-level-manager";
 import UIElement from "./components/ui-element";
+import { useGame } from "./hooks/use-game";
 
 export default function UI() {
   const { activeLevelName } = useLevelManager();
+  const { playerHealth } = useGame();
+  const maxHealth = 5;
+
+  const healthStates = Array.from({ length: maxHealth }, (_, index) =>
+    index < playerHealth ? "healthy" : "damaged",
+  );
+
   return (
     <UIElement>
       <div className="flex justify-between text-4xl text-black">
@@ -11,9 +19,9 @@ export default function UI() {
           <p>Score: 9000</p>
         </div>
         <div className="border rounded-lg bg-white flex p-4 m-4 gap-2 items-center">
-          <div>Icon 1</div>
-          <div>Icon 2</div>
-          <div>Icon 3</div>
+          {healthStates.map((state, index) => (
+            <div key={index}>{state}</div>
+          ))}
         </div>
         <div className="border rounded-lg bg-white flex p-4 m-4 gap-2 items-center">
           <p>Current Level: {activeLevelName}</p>

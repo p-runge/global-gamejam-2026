@@ -1,15 +1,15 @@
+import { useGame } from "../../hooks/use-game";
 import Collectable from "../collectable";
-import { usePlayerHeal } from "../../hooks/use-player-heal";
 
 interface HealingPotionProps {
   position: [number, number];
 }
 
 export default function HealingPotion({ position }: HealingPotionProps) {
-  const { applyHealPlayer } = usePlayerHeal();
+  const { healPlayer } = useGame();
 
   function onCollect() {
-    applyHealPlayer();
+    healPlayer();
   }
 
   return (
