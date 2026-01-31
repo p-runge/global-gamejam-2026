@@ -15,7 +15,6 @@ export default function UI() {
     <UIElement>
       <div className="flex justify-between text-4xl text-black">
         <div className="border rounded-lg bg-white flex flex-col p-4 m-4">
-          <p>Level: 1</p>
           <p>Health: {playerHealth}</p>
         </div>
         <div className="border rounded-lg bg-white flex p-4 m-4 gap-2 items-center">
