@@ -3,13 +3,19 @@ import { useFrame } from "@react-three/fiber";
 import { useRef } from "react";
 import * as THREE from "three";
 import { useGame } from "../hooks/use-game";
+import { followPlayer, type MovementBehavior } from "../utils/movement";
 
 interface EnemyProps {
   position: [number, number];
-  speed?: number;
+  speed: number;
+  movementBehavior: MovementBehavior;
 }
 
-export default function Enemy({ position, speed = 1 }: EnemyProps) {
+export default function Enemy({
+  position,
+  speed,
+  movementBehavior = followPlayer,
+}: EnemyProps) {
   const { playerPosition } = useGame();
   const enemyMeshRef = useRef<THREE.Mesh>(null!);
   const enemyTexture = useTexture("/src/assets/enemy.png", (texture) => {
@@ -19,21 +25,13 @@ export default function Enemy({ position, speed = 1 }: EnemyProps) {
 
   useFrame((_, delta) => {
     if (!enemyMeshRef.current) return;
-    const currentPos = enemyMeshRef.current.position;
 
-    // Calculate direction to player
-    const dx = playerPosition.x - currentPos.x;
-    const dy = playerPosition.y - currentPos.y;
-    const distance = Math.sqrt(dx * dx + dy * dy);
-
-    // Normalize and move towards player
-    if (distance > 0.1) {
-      const normalizedX = dx / distance;
-      const normalizedY = dy / distance;
-
-      currentPos.x += normalizedX * speed * delta;
-      currentPos.y += normalizedY * speed * delta;
-    }
+    movementBehavior({
+      currentPosition: enemyMeshRef.current.position,
+      playerPosition,
+      delta,
+      speed,
+    });
   });
 
   return (

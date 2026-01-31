@@ -5,6 +5,7 @@ import SpeedUp from "../components/collectables/speed-up";
 import Enemy from "../components/enemy";
 import Obstacle from "../components/obstacle";
 import Player from "../player";
+import { fleeFromPlayer, followPlayer } from "../utils/movement";
 
 export default function Game() {
   const floorTexture = useTexture("/src/assets/floor.png", (texture) => {
@@ -34,10 +35,10 @@ export default function Game() {
       <SpeedUp position={[0, 5, 0]} duration={3} speedMultiplier={2} />
       <Collectable position={[0, 8, 0]} />
 
-      <Enemy position={[6, 6]} />
-      <Enemy position={[-6, 6]} />
-      <Enemy position={[6, -6]} />
-      <Enemy position={[-6, -6]} />
+      <Enemy position={[6, -6]} speed={1.5} movementBehavior={followPlayer} />
+      <Enemy position={[6, 6]} speed={1} movementBehavior={followPlayer} />
+      <Enemy position={[-6, -6]} speed={2} movementBehavior={fleeFromPlayer} />
+      <Enemy position={[-6, 6]} speed={1.2} movementBehavior={fleeFromPlayer} />
 
       <Player />
     </>
