@@ -6,8 +6,31 @@ import SpeedUp from "../../collectables/speed-up";
 import Enemy from "../../enemy";
 import Obstacle from "../../obstacle";
 import HealingPotion from "../../collectables/healing-potion";
+import { useRespawningCollectables } from "../../../hooks/use-respawning-collectables";
+
+const obstacleConfigs = [
+  { position: [3, 0] as [number, number], size: [2, 2] as [number, number] },
+  {
+    position: [-4, 2] as [number, number],
+    size: [1.5, 1.5] as [number, number],
+  },
+  { position: [0, -3] as [number, number], size: [3, 1] as [number, number] },
+  {
+    position: [-2, -5] as [number, number],
+    size: [1, 2] as [number, number],
+  },
+  { position: [5, -2] as [number, number], size: [2, 2] as [number, number] },
+];
 
 export default function Level1() {
+  const { healthPotions, speedUps, onHealthPotionCollect, onSpeedUpCollect } =
+    useRespawningCollectables({
+      obstacles: obstacleConfigs,
+      bounds: { minX: -10, maxX: 10, minY: -10, maxY: 10 },
+      collectableConfig: { healthPotions: 3, speedUps: 3 },
+      respawnDelay: 5000,
+    });
+
   const floorTexture = useTexture("/src/assets/floor.png");
 
   useMemo(() => {
@@ -29,19 +52,34 @@ export default function Level1() {
         <meshBasicMaterial map={floorTexture} />
       </mesh>
 
-      <Obstacle position={[3, 0]} size={[2, 2]} color="#ff6b6b" />
-      <Obstacle position={[-4, 2]} size={[1.5, 1.5]} color="#51cf66" />
-      <Obstacle position={[0, -3]} size={[3, 1]} color="#339af0" />
-      <Obstacle position={[-2, -5]} size={[1, 2]} color="#ffd43b" />
-      <Obstacle position={[5, -2]} size={[2, 2]} color="#f783ac" />
+      {obstacleConfigs.map((config, index) => (
+        <Obstacle
+          key={index}
+          position={config.position}
+          size={config.size}
+          color={["#ff6b6b", "#51cf66", "#339af0", "#ffd43b", "#f783ac"][index]}
+        />
+      ))}
 
-      <SpeedUp position={[0, 5]} duration={3} speedMultiplier={2} />
-      <SpeedUp position={[-5, -5]} duration={5} speedMultiplier={3} />
-      <SpeedUp position={[5, 5]} duration={4} speedMultiplier={2.5} />
+      {speedUps.map((speedUp) => (
+        <SpeedUp
+          key={speedUp.id}
+          id={speedUp.id}
+          position={[speedUp.position[0], speedUp.position[1]]}
+          duration={3}
+          speedMultiplier={2}
+          onCollect={onSpeedUpCollect}
+        />
+      ))}
 
-      <HealingPotion position={[0, 8]} />
-      <HealingPotion position={[8, 0]} />
-      <HealingPotion position={[4, 4]} />
+      {healthPotions.map((potion) => (
+        <HealingPotion
+          key={potion.id}
+          id={potion.id}
+          position={[potion.position[0], potion.position[1]]}
+          onCollect={onHealthPotionCollect}
+        />
+      ))}
 
       <Enemy position={[6, -6]} speed={1.5} movementBehavior={followPlayer} />
       <Enemy position={[6, 6]} speed={1} movementBehavior={followPlayer} />

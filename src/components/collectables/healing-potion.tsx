@@ -3,13 +3,22 @@ import Collectable from "../collectable";
 
 interface HealingPotionProps {
   position: [number, number];
+  id?: string;
+  onCollect?: (id: string) => void;
 }
 
-export default function HealingPotion({ position }: HealingPotionProps) {
+export default function HealingPotion({
+  position,
+  id,
+  onCollect: onCollectCallback,
+}: HealingPotionProps) {
   const { healPlayer } = useGame();
 
   function onCollect() {
     healPlayer();
+    if (onCollectCallback && id) {
+      onCollectCallback(id);
+    }
   }
 
   return (
