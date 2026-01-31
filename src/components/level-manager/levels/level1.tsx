@@ -1,6 +1,7 @@
 import { useTexture } from "@react-three/drei";
 import { useMemo } from "react";
 import * as THREE from "three";
+import floorImage from "../../../assets/floor.png";
 import { useEnemySpawner } from "../../../hooks/use-enemy-spawner";
 import { useRespawningCollectables } from "../../../hooks/use-respawning-collectables";
 import { followPlayer } from "../../../utils/movement";
@@ -32,7 +33,7 @@ export default function Level1() {
       respawnDelay: 5000,
     });
 
-  const floorTexture = useTexture("/src/assets/floor.png");
+  const floorTexture = useTexture(floorImage);
   const { enemies, removeEnemy } = useEnemySpawner({
     spawnInterval: 1,
     baseSpeed: 1.5,
