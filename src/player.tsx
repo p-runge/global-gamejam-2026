@@ -2,7 +2,7 @@ import { OrthographicCamera, useTexture } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
-import playerSpriteSheet from "./assets/player-sprite-sheet.png";
+import playerSpriteSheet from "./assets/player-sprites.png";
 import {
   useAnimation,
   type Animation,
