@@ -1,5 +1,4 @@
 import { Canvas } from "@react-three/fiber";
-import { createRoot } from "react-dom/client";
 import SceneManager from "./components/scene-manager";
 import { SceneManagerProvider } from "./components/scene-manager/use-scene-manager";
 import { GameProvider } from "./hooks/use-game";
@@ -31,5 +30,3 @@ export default function App() {
     </div>
   );
 }
-
-createRoot(document.getElementById("root")!).render(<App />);

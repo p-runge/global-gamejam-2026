@@ -1,6 +1,7 @@
-import { PerspectiveCamera } from "@react-three/drei";
+import { PerspectiveCamera, useTexture } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import { useEffect, useRef, useState } from "react";
+import * as THREE from "three";
 import { useControls } from "./hooks/use-controls";
 import { useGame } from "./hooks/use-game";
 import UI from "./ui";
@@ -9,6 +10,10 @@ export default function Player() {
   const { playerPosition, movePlayer } = useGame();
   const [velocity, setVelocity] = useState({ x: 0, y: 0 });
   const velocityRef = useRef(velocity);
+  const characterTexture = useTexture("/src/assets/player.png", (texture) => {
+    texture.magFilter = THREE.NearestFilter;
+    texture.minFilter = THREE.NearestFilter;
+  });
 
   useEffect(() => {
     velocityRef.current = velocity;
@@ -68,8 +73,8 @@ export default function Player() {
   return (
     <>
       <mesh position={[playerPosition.x, playerPosition.y, playerPosition.z]}>
-        <boxGeometry />
-        <meshStandardMaterial color="hotpink" />
+        <planeGeometry args={[1, 1]} />
+        <meshStandardMaterial map={characterTexture} transparent />
       </mesh>
       <PerspectiveCamera
         makeDefault
