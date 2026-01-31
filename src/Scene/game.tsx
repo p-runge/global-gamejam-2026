@@ -3,6 +3,7 @@ import * as THREE from "three"
 import Obstacle from "../components/obstacle"
 import Player from "../player"
 import Collectable from "../components/collectable"
+import SpeedUp from "../components/collectables/speed-up"
 
 export default function Game() {
   const floorTexture = useTexture("/src/assets/floor.png", (texture) => {
@@ -29,8 +30,8 @@ export default function Game() {
       <Obstacle position={[5, -2]} size={[2, 2]} color='#f783ac' />
 
       <Collectable position={[0, 2, 0]} />
+      <SpeedUp position={[0, 5, 0]} duration={3} speedMultiplier={2} />
       <Collectable position={[0, 8, 0]} />
-      <Collectable position={[5, 8, 0]} />
 
       <Player />
     </>
