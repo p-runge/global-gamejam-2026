@@ -94,7 +94,6 @@ export default function Player() {
     let vx = velocityRef.current.x;
     let vy = velocityRef.current.y;
 
-    // Normalize velocity to always have magnitude 0 or 1
     const magnitude = Math.sqrt(vx * vx + vy * vy);
     const isMoving = magnitude > 0;
 
@@ -107,8 +106,8 @@ export default function Player() {
     updateFrame(delta, characterTexture);
 
     if (magnitude > 0) {
-      vx = vx / magnitude;
-      vy = vy / magnitude;
+      vx /= magnitude;
+      vy /= magnitude;
 
       const newPos = {
         x: playerPosition.x + vx * speed * delta,
