@@ -1,6 +1,7 @@
 import { useTexture } from "@react-three/drei";
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import * as THREE from "three";
+import { useEnemySpawner } from "../../../hooks/use-enemy-spawner";
 import { fleeFromPlayer } from "../../../utils/movement";
 import SpeedUp from "../../collectables/speed-up";
 import Enemy from "../../enemy";
@@ -8,17 +9,12 @@ import Obstacle from "../../obstacle";
 
 export default function Level2() {
   const floorTexture = useTexture("/src/assets/floor.png");
-  const [enemies, setEnemies] = useState([
-    { id: 1, position: [10, -10] as [number, number], speed: 2 },
-    { id: 2, position: [-10, 10] as [number, number], speed: 2 },
-    { id: 3, position: [-10, -10] as [number, number], speed: 1.8 },
-    { id: 4, position: [10, 10] as [number, number], speed: 1.8 },
-    { id: 5, position: [0, 15] as [number, number], speed: 2.5 },
-  ]);
-
-  const removeEnemy = (id: number) => {
-    setEnemies((prev) => prev.filter((enemy) => enemy.id !== id));
-  };
+  const { enemies, removeEnemy } = useEnemySpawner({
+    spawnInterval: 1.5,
+    baseSpeed: 2,
+    maxSpeedIncrease: 2,
+    initialEnemies: [{ id: 1, position: [-8, -8], speed: 2 }],
+  });
 
   useMemo(() => {
     if (floorTexture) {

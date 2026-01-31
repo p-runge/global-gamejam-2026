@@ -1,12 +1,13 @@
 import { useTexture } from "@react-three/drei";
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import * as THREE from "three";
+import { useEnemySpawner } from "../../../hooks/use-enemy-spawner";
+import { useRespawningCollectables } from "../../../hooks/use-respawning-collectables";
 import { followPlayer } from "../../../utils/movement";
+import HealingPotion from "../../collectables/healing-potion";
 import SpeedUp from "../../collectables/speed-up";
 import Enemy from "../../enemy";
 import Obstacle from "../../obstacle";
-import HealingPotion from "../../collectables/healing-potion";
-import { useRespawningCollectables } from "../../../hooks/use-respawning-collectables";
 
 const obstacleConfigs = [
   { position: [3, 0] as [number, number], size: [2, 2] as [number, number] },
@@ -32,16 +33,12 @@ export default function Level1() {
     });
 
   const floorTexture = useTexture("/src/assets/floor.png");
-  const [enemies, setEnemies] = useState([
-    { id: 1, position: [6, -6] as [number, number], speed: 1.5 },
-    { id: 2, position: [6, 6] as [number, number], speed: 1 },
-    { id: 3, position: [-6, -6] as [number, number], speed: 2 },
-    { id: 4, position: [-6, 6] as [number, number], speed: 1.2 },
-  ]);
-
-  const removeEnemy = (id: number) => {
-    setEnemies((prev) => prev.filter((enemy) => enemy.id !== id));
-  };
+  const { enemies, removeEnemy } = useEnemySpawner({
+    spawnInterval: 1,
+    baseSpeed: 1.5,
+    maxSpeedIncrease: 3,
+    initialEnemies: [{ id: 1, position: [8, 8], speed: 1.5 }],
+  });
 
   useMemo(() => {
     if (floorTexture) {
