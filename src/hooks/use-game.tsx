@@ -18,6 +18,7 @@ interface GameContextType {
   setSpeedMultiplier: (multiplier: number) => void;
   playerHealth: number;
   takePlayerDamage: () => void;
+  healPlayer: () => void;
 }
 
 const GameContext = createContext<GameContextType | undefined>(undefined);
@@ -42,6 +43,9 @@ export const GameProvider = ({ children }: { children: React.ReactNode }) => {
       switchScene("gameOver");
     }
   }, [playerHealth, switchScene]);
+  const healPlayer = () => {
+    setPlayerHealth(Math.max(0, playerHealth + 1));
+  };
 
   return (
     <GameContext.Provider
@@ -53,6 +57,7 @@ export const GameProvider = ({ children }: { children: React.ReactNode }) => {
         setSpeedMultiplier,
         playerHealth,
         takePlayerDamage,
+        healPlayer,
       }}
     >
       {children}

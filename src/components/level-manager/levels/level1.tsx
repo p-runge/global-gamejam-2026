@@ -4,6 +4,7 @@ import { followPlayer } from "../../../utils/movement";
 import SpeedUp from "../../collectables/speed-up";
 import Enemy from "../../enemy";
 import Obstacle from "../../obstacle";
+import HealingPotion from "../../collectables/healing-potion";
 
 export default function Level1() {
   const floorTexture = useTexture("/src/assets/floor.png", (texture) => {
@@ -32,6 +33,10 @@ export default function Level1() {
       <SpeedUp position={[0, 5]} duration={3} speedMultiplier={2} />
       <SpeedUp position={[-5, -5]} duration={5} speedMultiplier={3} />
       <SpeedUp position={[5, 5]} duration={4} speedMultiplier={2.5} />
+
+      <HealingPotion position={[0, 8]} />
+      <HealingPotion position={[8, 0]} />
+      <HealingPotion position={[4, 4]} />
 
       <Enemy position={[6, -6]} speed={1.5} movementBehavior={followPlayer} />
       <Enemy position={[6, 6]} speed={1} movementBehavior={followPlayer} />
