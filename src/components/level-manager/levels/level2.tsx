@@ -1,5 +1,5 @@
 import { useTexture } from "@react-three/drei";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import * as THREE from "three";
 import { fleeFromPlayer } from "../../../utils/movement";
 import SpeedUp from "../../collectables/speed-up";
@@ -8,6 +8,17 @@ import Obstacle from "../../obstacle";
 
 export default function Level2() {
   const floorTexture = useTexture("/src/assets/floor.png");
+  const [enemies, setEnemies] = useState([
+    { id: 1, position: [10, -10] as [number, number], speed: 2 },
+    { id: 2, position: [-10, 10] as [number, number], speed: 2 },
+    { id: 3, position: [-10, -10] as [number, number], speed: 1.8 },
+    { id: 4, position: [10, 10] as [number, number], speed: 1.8 },
+    { id: 5, position: [0, 15] as [number, number], speed: 2.5 },
+  ]);
+
+  const removeEnemy = (id: number) => {
+    setEnemies((prev) => prev.filter((enemy) => enemy.id !== id));
+  };
 
   useMemo(() => {
     if (floorTexture) {
@@ -28,7 +39,6 @@ export default function Level2() {
         <meshBasicMaterial map={floorTexture} />
       </mesh>
 
-      <Obstacle position={[0, 0]} size={[4, 4]} color="#ff6b6b" />
       <Obstacle position={[-8, 8]} size={[2, 2]} color="#51cf66" />
       <Obstacle position={[8, 8]} size={[2, 2]} color="#339af0" />
       <Obstacle position={[-8, -8]} size={[2, 2]} color="#ffd43b" />
@@ -38,19 +48,15 @@ export default function Level2() {
       <SpeedUp position={[-10, -10]} duration={4} speedMultiplier={3} />
       <SpeedUp position={[0, -12]} duration={6} speedMultiplier={2} />
 
-      <Enemy position={[10, -10]} speed={2} movementBehavior={fleeFromPlayer} />
-      <Enemy position={[-10, 10]} speed={2} movementBehavior={fleeFromPlayer} />
-      <Enemy
-        position={[-10, -10]}
-        speed={1.8}
-        movementBehavior={fleeFromPlayer}
-      />
-      <Enemy
-        position={[10, 10]}
-        speed={1.8}
-        movementBehavior={fleeFromPlayer}
-      />
-      <Enemy position={[0, 15]} speed={2.5} movementBehavior={fleeFromPlayer} />
+      {enemies.map((enemy) => (
+        <Enemy
+          key={enemy.id}
+          position={enemy.position}
+          speed={enemy.speed}
+          movementBehavior={fleeFromPlayer}
+          onDestroy={() => removeEnemy(enemy.id)}
+        />
+      ))}
     </>
   );
 }

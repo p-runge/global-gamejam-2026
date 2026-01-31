@@ -3,24 +3,26 @@ import { useFrame } from "@react-three/fiber";
 import { useRef } from "react";
 import * as THREE from "three";
 import { useGame } from "../hooks/use-game";
-import { followPlayer, type MovementBehavior } from "../utils/movement";
 import { isColliding } from "../utils/collision";
+import { type MovementBehavior } from "../utils/movement";
 
 interface EnemyProps {
   position: [number, number];
   speed: number;
   movementBehavior: MovementBehavior;
+  onDestroy?: () => void;
 }
 
 export default function Enemy({
   position,
   speed,
-  movementBehavior = followPlayer,
+  movementBehavior,
+  onDestroy,
 }: EnemyProps) {
   const { playerPosition, takePlayerDamage } = useGame();
   const enemyMeshRef = useRef<THREE.Mesh>(null!);
   const playerMeshRef = useRef<THREE.Mesh | null>(null);
-  const damageTimerRef = useRef<number>(0);
+  const hasCollidedRef = useRef<boolean>(false);
   const enemyTexture = useTexture("/src/assets/enemy.png", (texture) => {
     texture.magFilter = THREE.NearestFilter;
     texture.minFilter = THREE.NearestFilter;
@@ -47,16 +49,13 @@ export default function Enemy({
     }
 
     // Check collision with player
-    if (isColliding(enemyMeshRef.current, playerMeshRef.current)) {
-      damageTimerRef.current += delta;
-      // Only deal damage once per second to avoid multiple damage per frame
-      if (damageTimerRef.current >= 1) {
-        takePlayerDamage();
-        damageTimerRef.current = 0;
-      }
-    } else {
-      // Reset timer when not colliding
-      damageTimerRef.current = 0;
+    if (
+      isColliding(enemyMeshRef.current, playerMeshRef.current) &&
+      !hasCollidedRef.current
+    ) {
+      hasCollidedRef.current = true;
+      takePlayerDamage();
+      onDestroy?.();
     }
   });
 
