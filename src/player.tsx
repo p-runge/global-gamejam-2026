@@ -74,7 +74,7 @@ export default function Player() {
     <>
       <mesh position={[playerPosition.x, playerPosition.y, playerPosition.z]}>
         <planeGeometry args={[1, 1]} />
-        <meshStandardMaterial map={characterTexture} transparent />
+        <meshBasicMaterial map={characterTexture} transparent />
       </mesh>
       <PerspectiveCamera
         makeDefault

@@ -15,9 +15,9 @@ export default function Game() {
   return (
     <>
       {/* Floor plane */}
-      <mesh position={[0, 0, -1]} receiveShadow>
+      <mesh position={[0, 0, -1]}>
         <planeGeometry args={[32, 32]} />
-        <meshStandardMaterial map={floorTexture} />
+        <meshBasicMaterial map={floorTexture} />
       </mesh>
 
       <Player />
