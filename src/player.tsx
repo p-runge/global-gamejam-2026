@@ -17,21 +17,34 @@ const spriteSheet: SpriteSheetData = {
   tileWidth: 32,
   tileHeight: 32,
   rows: 1,
-  cols: 2,
+  cols: 5,
 };
 
 const idleAnimation: Animation = [{ x: 0, y: 0, duration: 0.1 }];
 const runningAnimation: Animation = [
-  { x: 0, y: 0, duration: 0.1 },
   { x: 1, y: 0, duration: 0.1 },
+  { x: 2, y: 0, duration: 0.15 },
+  { x: 3, y: 0, duration: 0.1 },
+  { x: 2, y: 0, duration: 0.15 },
 ];
+const beingHitAnimation: Animation = [{ x: 4, y: 0, duration: 0.2 }];
 
 export default function Player() {
-  const { playerPosition, movePlayer, obstacleRefs, speedMultiplier } =
-    useGame();
+  const {
+    playerPosition,
+    movePlayer,
+    obstacleRefs,
+    speedMultiplier,
+    playerHealth,
+  } = useGame();
   const [velocity, setVelocity] = useState({ x: 0, y: 0 });
   const velocityRef = useRef(velocity);
   const playerMeshRef = useRef<THREE.Mesh>(null!);
+  const [isBeingHit, setIsBeingHit] = useState(false);
+  const previousHealthRef = useRef(playerHealth);
+  const [facingDirection, setFacingDirection] = useState<"left" | "right">(
+    "left"
+  );
   const { playAnimation, updateFrame } = useAnimation(
     spriteSheet,
     idleAnimation
@@ -50,6 +63,17 @@ export default function Player() {
   useEffect(() => {
     velocityRef.current = velocity;
   }, [velocity]);
+
+  // Track when player takes damage and trigger hit animation
+  useEffect(() => {
+    if (playerHealth < previousHealthRef.current) {
+      setIsBeingHit(true);
+      // Reset hit state after animation duration
+      const timer = setTimeout(() => setIsBeingHit(false), 200);
+      return () => clearTimeout(timer);
+    }
+    previousHealthRef.current = playerHealth;
+  }, [playerHealth]);
 
   useControls({
     keyboard: {
@@ -97,8 +121,22 @@ export default function Player() {
     const magnitude = Math.sqrt(vx * vx + vy * vy);
     const isMoving = magnitude > 0;
 
-    // Update animation based on movement state
-    if (isMoving) {
+    // Track horizontal movement direction for mirroring
+    if (vx > 0) {
+      setFacingDirection("left");
+    } else if (vx < 0) {
+      setFacingDirection("right");
+    }
+
+    // Mirror the mesh based on facing direction
+    if (playerMeshRef.current) {
+      playerMeshRef.current.scale.x = facingDirection === "left" ? -1 : 1;
+    }
+
+    // Update animation based on state priority: hit > movement > idle
+    if (isBeingHit) {
+      playAnimation(beingHitAnimation);
+    } else if (isMoving) {
       playAnimation(runningAnimation);
     } else {
       playAnimation(idleAnimation);
