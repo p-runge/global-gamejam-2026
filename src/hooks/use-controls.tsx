@@ -1,7 +1,14 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
+
+export type KeyHandler =
+  | ((e: KeyboardEvent) => void)
+  | {
+      onPress?: (e: KeyboardEvent) => void;
+      onRelease?: (e: KeyboardEvent) => void;
+    };
 
 export type ControlSchema = {
-  keyboard?: Record<string, (e: KeyboardEvent) => void>;
+  keyboard?: Record<string, KeyHandler>;
   mouse?: {
     onClick?: (e: MouseEvent) => void;
     onMouseMove?: (e: MouseEvent) => void;
@@ -11,11 +18,32 @@ export type ControlSchema = {
 };
 
 export function useControls(schema: ControlSchema) {
+  const pressedKeys = useRef<Set<string>>(new Set());
+
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       const handler = schema.keyboard?.[e.key];
-      if (handler) {
+      if (!handler) return;
+
+      // If key is already pressed (and holding), don't trigger again
+      if (pressedKeys.current.has(e.key)) return;
+      pressedKeys.current.add(e.key);
+
+      if (typeof handler === "function") {
         handler(e);
+      } else {
+        handler.onPress?.(e);
+      }
+    };
+
+    const handleKeyUp = (e: KeyboardEvent) => {
+      const handler = schema.keyboard?.[e.key];
+      if (!handler) return;
+
+      pressedKeys.current.delete(e.key);
+
+      if (typeof handler !== "function") {
+        handler.onRelease?.(e);
       }
     };
 
@@ -36,6 +64,7 @@ export function useControls(schema: ControlSchema) {
     };
 
     window.addEventListener("keydown", handleKeyDown);
+    window.addEventListener("keyup", handleKeyUp);
     if (schema.mouse?.onClick) {
       window.addEventListener("click", handleClick);
     }
@@ -51,6 +80,7 @@ export function useControls(schema: ControlSchema) {
 
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("keyup", handleKeyUp);
       if (schema.mouse?.onClick) {
         window.removeEventListener("click", handleClick);
       }
